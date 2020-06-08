@@ -48,7 +48,11 @@ install:
 
 # Instalar PyAudio
 
-  - pip install PyAudio
+  - sudo apt-get -y install portaudio19-dev python-all-dev python3-all-dev
+  - sudo apt-get install python3-pip
+  - sudo apt-get install libasound-dev
+  - python -m pip install pydub
+  - python -m pip install PyAudio
 
 # Instalar vosk
 
