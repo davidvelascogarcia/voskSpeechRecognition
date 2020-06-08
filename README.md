@@ -28,6 +28,14 @@ python3 speechRecognition.py
 yarp connect /voskSpeechRecognition/data:o /yourport/data:i
 ```
 
+**NOTE:**
+
+- Data results are published on `/voskSpeechRecognition/data:o`
+
+### Configure language
+
+To configure speech recognition language model, language table is attached:
+
 **Language table:**
 
 Table 1. Language table
@@ -46,19 +54,6 @@ Table 1. Language table
 | Vietnmaese | vn |
 
 
-**NOTE:**
-
-- Data results are published on `/voskSpeechRecognition/data:o`
-
-**Possible errors:**
-
-`vosk` `python` version requirements:
-
-- `vosk` require `python 3.8+` to be used in `Windows`.
-- `vosk` require `python 3.5+` to be used in `Linux`.
-- `vosk` require `python 3.8+` to be used in `Mac OS X`.
-- `vosk` require `python 3.7+` to be used in `Raspbian`. (`Raspberry` also require to download and install `.whl` manually. `vosk` `Raspberry` version [here](https://github.com/alphacep/vosk-api/releases/download/0.3.7/vosk-0.3.7-cp37-cp37m-linux_aarch64.whl)
-
 
 ## Requirements
 
@@ -71,6 +66,16 @@ Table 1. Language table
 ```bash
 pip3 install vosk
 ```
+
+**Possible errors:**
+
+`vosk` `python` version requirements:
+
+- `vosk` require `python 3.8+` to be used in `Windows`.
+- `vosk` require `python 3.5+` to be used in `Linux`.
+- `vosk` require `python 3.8+` to be used in `Mac OS X`.
+- `vosk` require `python 3.7+` to be used in `Raspbian`. (`Raspberry` also require to download and install `.whl` manually. `vosk` `Raspberry` version [here](https://github.com/alphacep/vosk-api/releases/download/0.3.7/vosk-0.3.7-cp37-cp37m-linux_aarch64.whl)
+
 
 Tested on: `windows 10`, `ubuntu 14.04`, `ubuntu 16.04`, `ubuntu 18.04`, `lubuntu 18.04` and `raspbian`.
 
