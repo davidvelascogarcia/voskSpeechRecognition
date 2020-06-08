@@ -2,9 +2,7 @@
 
 # Lenguaje de programación
 
-language: python
-python:
-   - "3.5"
+language: python 3.5
 
 # Sistema operativo destino a probar
 
@@ -41,11 +39,6 @@ before_install:
 
 install:
 
-# Instalar dependencias
-
-  - sudo apt-get -y install portaudio19-dev python-all-dev python3-all-dev
-  - sudo apt-get install python3-pip
-
 # Instalar YARP
 
   - sudo sh -c 'echo "deb http://www.icub.org/ubuntu xenial contrib/science" > /etc/apt/sources.list.d/icub.list'
@@ -53,30 +46,25 @@ install:
   - sudo apt-get update
   - sudo apt-get install yarp
 
-# Instalar pyaudio
+# Instalar PyAudio
 
-  - sudo pip3 install pyaudio
+  - pip install PyAudio
 
-# Instalar SpeechRecognition
+# Instalar vosk
 
-  - sudo pip3 install vosk
+  - python -m pip install vosk
 
 # Tareas a ejecutar antes de nuestra prueba
 
 before_script:
-
   - cd programs
 
-# Compilamos
-
 script:
+  - cd ..
 
 # En caso de compilación exitosa
-  - cd
 
 after_success:
-
-  - cd ..
 
 # Notificaciones por correo
 
