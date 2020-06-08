@@ -55,11 +55,11 @@ install:
 
 # Instalar pyaudio
 
-  - sudo pip install pyaudio
+  - sudo pip3 install pyaudio
 
 # Instalar SpeechRecognition
 
-  - sudo pip install vosk
+  - sudo pip3 install vosk
 
 # Tareas a ejecutar antes de nuestra prueba
 
