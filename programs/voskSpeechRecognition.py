@@ -14,6 +14,7 @@
   * | /voskSpeechRecognition/data:o        | Recognized output text                                 |
   *
 '''
+
 # Libraries
 import configparser
 import datetime
@@ -74,7 +75,7 @@ while int(loopControlFileExists)==0:
 
         userLanguage = languageConfigurationObject['Language']['user-language']
 
-        print("User language: "+str(userLanguage))
+        print("User language: " + str(userLanguage))
         print("")
 
         loopControlFileExists = 1
@@ -88,7 +89,6 @@ while int(loopControlFileExists)==0:
 
 print("[INFO] Data obtained correctly.")
 print("")
-
 
 print("")
 print("")
@@ -105,7 +105,7 @@ while int(loopControlModelExist) == 0:
 
     try:
         # Get full model path
-        modelPath = "./../models/model-"+str(userLanguage)
+        modelPath = "./../models/model-" + str(userLanguage)
 
         # Load full model path
         voskSpeechRecognitionModel = Model(modelPath)
@@ -179,7 +179,7 @@ while int(loopControlInitMicrophone) == 0:
         microphoneEngine = pyaudio.PyAudio()
 
         # Open microphone
-        voskSpeechRecognitionMicrophone = microphoneEngine.open(format=pyaudio.paInt16, channels=1, rate=16000, input=True, frames_per_buffer=8000)
+        voskSpeechRecognitionMicrophone = microphoneEngine.open(format = pyaudio.paInt16, channels = 1, rate = 16000, input = True, frames_per_buffer = 8000)
 
         # Init streaming
         voskSpeechRecognitionMicrophone.start_stream()
@@ -228,7 +228,7 @@ voskSpeechRecognition_outputPortName = '/voskSpeechRecognition/data:o'
 voskSpeechRecognition_outputPort.open(voskSpeechRecognition_outputPortName)
 
 # Create output data bottle
-outputBottle=yarp.Bottle()
+voskSpeechRecognitionOutputBottle = yarp.Bottle()
 
 print("")
 print("")
@@ -255,6 +255,9 @@ while int(loopControlAnalyzingAudio) == 0:
     # Listened audio
     listenedAudio = voskSpeechRecognitionMicrophone.read(4000)
 
+    # Get detected datetime
+    recognizedTimeDetection = str(datetime.datetime.now())
+
     # If listenedAudio is empty
     if len(listenedAudio) == 0:
         # Do nothing
@@ -262,23 +265,44 @@ while int(loopControlAnalyzingAudio) == 0:
 
     # If detect and recognize final results
     if voskSpeechRecognitionEngine.AcceptWaveform(listenedAudio):
+
         # Print final results
         recognizedResults = voskSpeechRecognitionEngine.Result()
+
+        # Print recognized results
+        print("")
+        print("[RESULTS] Recognized results:")
+        print("Recognized audio at " + str(recognizedTimeDetection) + ".")
+        print("")
         print(recognizedResults)
 
         # Prepare recognized text to send
         parsedRecognizedResults = recognizedResults.split('"text" : "')[1].split('"')[0]
 
         # Send results with yarp port
-        outputBottle.clear()
-        outputBottle.addString("Recognized: "+str(parsedRecognizedResults))
-        voskSpeechRecognition_outputPort.write(outputBottle)
+        voskSpeechRecognitionOutputBottle.clear()
+        voskSpeechRecognitionOutputBottle.addString("Recognized: ")
+        voskSpeechRecognitionOutputBottle.addString(str(parsedRecognizedResults))
+        voskSpeechRecognitionOutputBottle.addString("Time: ")
+        voskSpeechRecognitionOutputBottle.addString(recognizedTimeDetection)
+
+        voskSpeechRecognition_outputPort.write(voskSpeechRecognitionOutputBottle)
 
     # If detect and recognize parcial results
     else:
+
         # Print partial results
         recognizedPartialResults = voskSpeechRecognitionEngine.PartialResult()
         print(recognizedPartialResults)
+
+        # Send None results with yarp port
+        voskSpeechRecognitionOutputBottle.clear()
+        voskSpeechRecognitionOutputBottle.addString("Recognized: ")
+        voskSpeechRecognitionOutputBottle.addString("None")
+        voskSpeechRecognitionOutputBottle.addString("Time: ")
+        voskSpeechRecognitionOutputBottle.addString(recognizedTimeDetection)
+
+        voskSpeechRecognition_outputPort.write(voskSpeechRecognitionOutputBottle)
 
 
 # Close YARP ports
